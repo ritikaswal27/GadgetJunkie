@@ -14,7 +14,6 @@ import {
 import { useState } from 'react';
 
 function App() {
-  // const [sidebar, setSidebar] = useState(false);
   return (
     <Router>
       <Navbar />
