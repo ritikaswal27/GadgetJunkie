@@ -4,21 +4,27 @@ import { Filters, ProductList, Sort, PageHero } from '../components';
 import { useProductsContext } from '../context/products_context';
 
 const ProductsPage = () => {
-  const data = useProductsContext();
-  if (data.products_loading) {
-    return <h1> loading...</h1>;
-  }
-  if (data.products_error) {
-    return <h1> error</h1>;
-  }
+  // const data = useProductsContext();
+  // if (data.products_loading) {
+  //   return <h1> loading...</h1>;
+  // }
+  // if (data.products_error) {
+  //   return <h1> error</h1>;
+  // }
 
   return (
-    <h4>products page</h4>
-    // {data.products.map((product) =>{
-    //   return (
-    //     <
-    //   )
-    // })}
+    <main>
+      <PageHero title='products' />
+      <Wrapper className='page'>
+        <div className='section-center products'>
+          <Filters />
+          <div>
+            <Sort />
+            <ProductList />
+          </div>
+        </div>
+      </Wrapper>
+    </main>
   );
 };
 
@@ -36,3 +42,9 @@ const Wrapper = styled.div`
 `;
 
 export default ProductsPage;
+
+// products
+
+// filter
+
+// categories and companies store

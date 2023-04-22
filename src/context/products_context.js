@@ -34,6 +34,7 @@ const ProductsContext = React.createContext();
 export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  //Sidebar
   const openSidebar = () => {
     dispatch({ type: SIDEBAR_OPEN });
   };
@@ -41,6 +42,7 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: SIDEBAR_CLOSE });
   };
 
+  // Products
   const fetchProducts = async (url) => {
     dispatch({ type: GET_PRODUCTS_BEGIN });
     try {
