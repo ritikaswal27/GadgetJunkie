@@ -17,7 +17,67 @@ const filter_reducer = (state, action) => {
       filtered_products: [...action.payload],
     };
   }
-  return state;
+  if (action.type === SET_GRIDVIEW) {
+    return { ...state, grid_view: true };
+  }
+  if (action.type === SET_LISTVIEW) {
+    return { ...state, grid_view: false };
+  }
+
+  if (action.type === UPDATE_SORT) {
+    return { ...state, sort: action.payload };
+  }
+
+  if (action.type === SORT_PRODUCTS) {
+    const { sort, filtered_products } = state;
+    let tempProducts = [...filtered_products];
+    if (sort === 'price-lowest') {
+      // tempProducts = tempProducts.sort((a, b) => a.price - b.price);
+      tempProducts = tempProducts.sort((a, b) => {
+        if (a.price < b.price) {
+          return -1;
+        }
+        if (a.price > b.price) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    if (sort === 'price-highest') {
+      tempProducts = tempProducts.sort((a, b) => b.price - a.price);
+    }
+    if (sort === 'name-a') {
+      tempProducts = tempProducts.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+    }
+    if (sort === 'name-z') {
+      tempProducts = tempProducts.sort((a, b) => {
+        return b.name.localeCompare(a.name);
+      });
+    }
+    return { ...state, filtered_products: tempProducts };
+  }
+
+  //   if (sortType === 'name_z-a') {
+  //     const strDescending = [...state.filtered_products].sort((a, b) =>
+  //       a.name > b.name ? -1 : 1
+  //     );
+  //     return { ...state, filtered_products: strDescending };
+  //   } else if (sortType === 'price_lowest') {
+  //     const numAscending = [...state.filtered_products].sort(
+  //       (a, b) => a.price - b.price
+  //     );
+  //     return { ...state, filtered_products: numAscending };
+  //   } else if (sortType === 'price_highest') {
+  //     const numDescending = [...state.filtered_products].sort(
+  //       (a, b) => b.price - a.price
+  //     );
+  //     return { ...state, filtered_products: numDescending };
+  //   }
+  //   return { ...state, sort_type: action.payload };
+  // }
+
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 

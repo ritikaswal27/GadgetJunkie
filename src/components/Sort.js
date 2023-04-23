@@ -1,10 +1,62 @@
-import React from 'react'
-import { useFilterContext } from '../context/filter_context'
-import { BsFillGridFill, BsList } from 'react-icons/bs'
-import styled from 'styled-components'
+import React from 'react';
+import { useFilterContext } from '../context/filter_context';
+import { BsFillGridFill, BsList } from 'react-icons/bs';
+import styled from 'styled-components';
 const Sort = () => {
-  return <h4>sort </h4>
-}
+  const {
+    filtered_products: products,
+    grid_view,
+    setGridView,
+    setListView,
+    sort,
+    updateSort,
+  } = useFilterContext();
+
+  return (
+    <Wrapper>
+      <div className='btn-container'>
+        <button
+          type='button'
+          onClick={setGridView}
+          className={grid_view ? 'active' : null}
+        >
+          <BsFillGridFill />
+        </button>
+        <button
+          type='button'
+          className={grid_view ? null : 'active'}
+          onClick={setListView}
+        >
+          <BsList />
+        </button>
+      </div>
+      <p>{products.length} products found</p>
+      <hr />
+      <form>
+        <label htmlFor='sort'>sort by</label>
+        <select
+          name='sort'
+          id='sort'
+          className='sort-input'
+          value={sort}
+          onChange={updateSort}
+        >
+          <option value='price-lowest'>price (lowest)</option>
+          <option value='price-highest'>price (highest)</option>
+          <option value='name-a'>name (a-z)</option>
+          <option value='name-z'>name (z-a)</option>
+        </select>
+      </form>
+      {/* <label htmlFor='sorting_type'>Sort By</label>
+      <select name='sorting_type' id='sorting_type' onChange={updateSort}>
+        <option value='name_a-z'>Name (A-Z)</option>
+        <option value='name_z-a'>Name (Z-A)</option>
+        <option value='price_lowest'>Price (Lowest)</option>
+        <option value='price_highest'>Price (Highest)</option>
+      </select> */}
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   display: grid;
@@ -67,6 +119,6 @@ const Wrapper = styled.section`
     font-size: 1rem;
     text-transform: capitalize;
   }
-`
+`;
 
-export default Sort
+export default Sort;
