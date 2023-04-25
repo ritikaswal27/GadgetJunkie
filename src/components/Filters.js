@@ -1,12 +1,73 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useFilterContext } from '../context/filter_context'
-import { getUniqueValues, formatPrice } from '../utils/helpers'
-import { FaCheck } from 'react-icons/fa'
+import React from 'react';
+import styled from 'styled-components';
+import { useFilterContext } from '../context/filter_context';
+import { getUniqueValues, formatPrice } from '../utils/helpers';
+import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
-  return <h4>filters</h4>
-}
+  const {
+    filter,
+    search,
+    updateFilter,
+    filterProducts,
+    all_products,
+    company,
+    updateCompany,
+  } = useFilterContext();
+  const values = [
+    'all',
+    'office',
+    'living room',
+    'kitchen',
+    'bedroom',
+    'dining',
+    'kids',
+  ];
+  let companies = all_products.map((product) => product.company);
+  companies = [...new Set(companies)];
+  return (
+    <Wrapper>
+      <form>
+        <input
+          type='text'
+          className='search-input'
+          placeholder='search'
+          value={search}
+          onChange={updateFilter}
+        />
+      </form>
+      {values.map((value, index) => {
+        return (
+          <button
+            key={index}
+            onClick={filterProducts}
+            className={value === filter ? 'active' : null}
+          >
+            {value}
+          </button>
+        );
+      })}
+      <form>
+        <h5>company</h5>
+        <select
+          name='company'
+          id='company'
+          value={company}
+          onChange={updateCompany}
+        >
+          <option value='all'>all</option>
+          {companies.map((company, index) => {
+            return (
+              <option key={index} value={company}>
+                {company}
+              </option>
+            );
+          })}
+        </select>
+      </form>
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.section`
   .form-control {
@@ -106,6 +167,6 @@ const Wrapper = styled.section`
       top: 1rem;
     }
   }
-`
+`;
 
-export default Filters
+export default Filters;

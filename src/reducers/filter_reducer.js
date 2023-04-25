@@ -56,7 +56,38 @@ const filter_reducer = (state, action) => {
         return b.name.localeCompare(a.name);
       });
     }
+
     return { ...state, filtered_products: tempProducts };
+  }
+
+  if (action.type === UPDATE_FILTERS) {
+    const { all_filtered_products } = state;
+    const val = action.payload;
+    const arr = all_filtered_products.filter((product) => {
+      return product.name.startsWith(val);
+    });
+    return { ...state, filtered_products: arr, search: action.payload };
+  }
+
+  if (action.type === FILTER_PRODUCTS) {
+    const value = action.payload;
+    if (value === 'all') {
+      return {
+        ...state,
+        filter: value,
+        filtered_products: [...state.all_products],
+        all_filtered_products: [...state.all_products],
+      };
+    }
+    const tempProducts = state.all_products.filter(
+      (product) => product.category === value
+    );
+    return {
+      ...state,
+      filter: value,
+      filtered_products: tempProducts,
+      all_filtered_products: tempProducts,
+    };
   }
 
   //   if (sortType === 'name_z-a') {
