@@ -60,35 +60,88 @@ const filter_reducer = (state, action) => {
     return { ...state, filtered_products: tempProducts };
   }
 
-  if (action.type === UPDATE_FILTERS) {
-    const { all_filtered_products } = state;
-    const val = action.payload;
-    const arr = all_filtered_products.filter((product) => {
-      return product.name.startsWith(val);
-    });
-    return { ...state, filtered_products: arr, search: action.payload };
+  if (action.type === FILTER_PRODUCTS) {
+    const { search, category, company, color, price, shipping } =
+      state.filterParam;
+    const findColor = (value) => {
+      return value === color;
+    };
+    const func = (product) => {
+      const {
+        category: productCategory,
+        company: productCompany,
+        colors: productColors,
+        price: productPrice,
+        shipping: freeShipping,
+      } = product;
+      if (
+        (category === 'all' || productCategory === category) &&
+        (company === 'all' || productCompany === company) &&
+        product.name.startsWith(search) &&
+        (color === 'all' || productColors.some(findColor)) &&
+        productPrice <= price &&
+        (!shipping || freeShipping === shipping)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    const tempProducts = state.all_products.filter(func);
+    // console.log(tempProducts, state.all_products);
+    return { ...state, filtered_products: tempProducts };
   }
 
-  if (action.type === FILTER_PRODUCTS) {
-    const value = action.payload;
-    if (value === 'all') {
-      return {
-        ...state,
-        filter: value,
-        filtered_products: [...state.all_products],
-        all_filtered_products: [...state.all_products],
-      };
-    }
-    const tempProducts = state.all_products.filter(
-      (product) => product.category === value
-    );
+  if (action.type === UPDATE_FILTERS) {
+    const { name, value } = action.payload;
+    return { ...state, filterParam: { ...state.filterParam, [name]: value } };
+  }
+
+  if (action.type === CLEAR_FILTERS) {
     return {
       ...state,
-      filter: value,
-      filtered_products: tempProducts,
-      all_filtered_products: tempProducts,
+      filtered_products: state.all_products,
+      filterParam: {
+        category: 'all',
+        company: 'all',
+        search: '',
+        color: 'all',
+        price: '309999',
+        shipping: false,
+      },
     };
   }
+
+  // if (action.type === UPDATE_FILTERS) {
+  //   const { all_filtered_products } = state;
+  //   const val = action.payload;
+  //   const arr = all_filtered_products.filter((product) => {
+  //     return product.name.startsWith(val);
+  //   });
+  //   return { ...state, filtered_products: arr, search: action.payload };
+  // }
+
+  // if (action.type === FILTER_PRODUCTS) {
+  //   const value = action.payload;
+  //   if (value === 'all') {
+  //     return {
+  //       ...state,
+  //       filter: value,
+  //       filtered_products: [...state.all_products],
+  //       all_filtered_products: [...state.all_products],
+  //     };
+  //   }
+  //   const tempProducts = state.all_products.filter(
+  //     (product) => product.category === value
+  //   );
+  //   return {
+  //     ...state,
+  //     filter: value,
+  //     filtered_products: tempProducts,
+  //     all_filtered_products: tempProducts,
+  //   };
+  // }
 
   //   if (sortType === 'name_z-a') {
   //     const strDescending = [...state.filtered_products].sort((a, b) =>

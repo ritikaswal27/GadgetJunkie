@@ -6,15 +6,19 @@ import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
   const {
-    filter,
-    search,
+    // filter,
+    // search,
     updateFilter,
-    filterProducts,
+    // filterProducts,
     all_products,
-    company,
-    updateCompany,
+    // company,
+    // updateCompany,
+    filterParam,
+    clearFilters,
   } = useFilterContext();
-  const values = [
+
+  const { category, company, search, price, color, shipping } = filterParam;
+  const categories = [
     'all',
     'office',
     'living room',
@@ -23,25 +27,35 @@ const Filters = () => {
     'dining',
     'kids',
   ];
+
   let companies = all_products.map((product) => product.company);
-  companies = [...new Set(companies)];
+  companies = ['all', ...new Set(companies)];
+
+  let colors = all_products.flatMap((product) => {
+    return product.colors;
+  });
+  colors = [...new Set(colors)];
+
   return (
     <Wrapper>
       <form>
         <input
           type='text'
+          name='search'
           className='search-input'
           placeholder='search'
           value={search}
           onChange={updateFilter}
         />
       </form>
-      {values.map((value, index) => {
+      {categories.map((value, index) => {
         return (
           <button
             key={index}
-            onClick={filterProducts}
-            className={value === filter ? 'active' : null}
+            name='category'
+            onClick={updateFilter}
+            className={value === category ? 'active' : null}
+            // value={category}
           >
             {value}
           </button>
@@ -53,9 +67,9 @@ const Filters = () => {
           name='company'
           id='company'
           value={company}
-          onChange={updateCompany}
+          onChange={updateFilter}
         >
-          <option value='all'>all</option>
+          {/* <option value='all'>all</option> */}
           {companies.map((company, index) => {
             return (
               <option key={index} value={company}>
@@ -65,6 +79,57 @@ const Filters = () => {
           })}
         </select>
       </form>
+
+      <div className='colors'>
+        <button
+          name='color'
+          value='all'
+          onClick={updateFilter}
+          className={color === 'all' ? 'active' : null}
+        >
+          all
+        </button>
+        {colors.map((clr, index) => {
+          return (
+            <button
+              key={index}
+              className='color-btn'
+              name='color'
+              value={clr}
+              style={{ backgroundColor: clr }}
+              onClick={updateFilter}
+              // className={`color-btn ${color === clr ? 'active' : null}`}
+            >
+              {color === clr && <FaCheck />}
+            </button>
+          );
+        })}
+      </div>
+
+      <form>
+        <p>{formatPrice(price)}</p>
+        <input
+          type='range'
+          name='price'
+          min='0'
+          max='309999'
+          value={price}
+          onChange={updateFilter}
+        />
+        <br />
+        <label htmlFor='shipping'>Free shipping</label>
+        <input
+          id='shipping'
+          type='checkbox'
+          name='shipping'
+          checked={shipping}
+          onChange={updateFilter}
+        />
+      </form>
+
+      <button className='clear-btn' onClick={clearFilters}>
+        clear filters
+      </button>
     </Wrapper>
   );
 };
