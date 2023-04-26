@@ -11,12 +11,17 @@ import {
 
 const filter_reducer = (state, action) => {
   if (action.type === LOAD_PRODUCTS) {
+    let maxPrice = action.payload.map((p) => p.price);
+    maxPrice = Math.max(...maxPrice);
+
     return {
       ...state,
       all_products: action.payload,
       filtered_products: [...action.payload],
+      filters: { ...state.filters, max_price: maxPrice, price: maxPrice },
     };
   }
+
   if (action.type === SET_GRIDVIEW) {
     return { ...state, grid_view: true };
   }
@@ -61,106 +66,98 @@ const filter_reducer = (state, action) => {
   }
 
   if (action.type === FILTER_PRODUCTS) {
-    const { search, category, company, color, price, shipping } =
-      state.filterParam;
-    const findColor = (value) => {
-      return value === color;
-    };
-    const func = (product) => {
-      const {
-        category: productCategory,
-        company: productCompany,
-        colors: productColors,
-        price: productPrice,
-        shipping: freeShipping,
-      } = product;
-      if (
-        (category === 'all' || productCategory === category) &&
-        (company === 'all' || productCompany === company) &&
-        product.name.startsWith(search) &&
-        (color === 'all' || productColors.some(findColor)) &&
-        productPrice <= price &&
-        (!shipping || freeShipping === shipping)
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    };
+    const { all_products } = state;
+    const { text, category, company, color, price, shipping } = state.filters;
+    let tempProducts = [...all_products];
 
-    const tempProducts = state.all_products.filter(func);
-    // console.log(tempProducts, state.all_products);
+    //filtering
+    if (text) {
+      tempProducts = tempProducts.filter((product) => {
+        return product.name.toLowerCase().startsWith(text);
+      });
+    }
+    // category
+    if (category !== 'all') {
+      tempProducts = tempProducts.filter(
+        (product) => product.category === category
+      );
+    }
+    // company
+    if (company !== 'all') {
+      tempProducts = tempProducts.filter(
+        (product) => product.company === company
+      );
+    }
+    // colors
+    if (color !== 'all') {
+      tempProducts = tempProducts.filter((product) => {
+        return product.colors.some((clr) => clr === color);
+        //return product.colors.find((clr) => clr === color);
+      });
+    }
+    //price
+    tempProducts = tempProducts.filter((product) => product.price <= price);
+    //shipping
+    if (shipping) {
+      tempProducts = tempProducts.filter(
+        (product) => product.shipping === true
+      );
+    }
     return { ...state, filtered_products: tempProducts };
   }
 
+  // if (action.type === FILTER_PRODUCTS) {
+  //   const { search, category, company, color, price, shipping } =
+  //     state.filterParam;
+  //   const findColor = (value) => {
+  //     return value === color;
+  //   };
+  //   const func = (product) => {
+  //     const {
+  //       category: productCategory,
+  //       company: productCompany,
+  //       colors: productColors,
+  //       price: productPrice,
+  //       shipping: freeShipping,
+  //     } = product;
+  //     if (
+  //       (category === 'all' || productCategory === category) &&
+  //       (company === 'all' || productCompany === company) &&
+  //       product.name.startsWith(search) &&
+  //       (color === 'all' || productColors.some(findColor)) &&
+  //       productPrice <= price &&
+  //       (!shipping || freeShipping === shipping)
+  //     ) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   };
+
+  //   const tempProducts = state.all_products.filter(func);
+
+  //   return { ...state, filtered_products: tempProducts };
+  // }
+
   if (action.type === UPDATE_FILTERS) {
     const { name, value } = action.payload;
-    return { ...state, filterParam: { ...state.filterParam, [name]: value } };
+    return { ...state, filters: { ...state.filters, [name]: value } };
   }
 
   if (action.type === CLEAR_FILTERS) {
     return {
       ...state,
-      filtered_products: state.all_products,
-      filterParam: {
-        category: 'all',
+      filters: {
+        ...state.filters,
+        text: '',
         company: 'all',
-        search: '',
+        category: 'all',
         color: 'all',
-        price: '309999',
+        price: state.filters.max_price,
         shipping: false,
       },
     };
   }
-
-  // if (action.type === UPDATE_FILTERS) {
-  //   const { all_filtered_products } = state;
-  //   const val = action.payload;
-  //   const arr = all_filtered_products.filter((product) => {
-  //     return product.name.startsWith(val);
-  //   });
-  //   return { ...state, filtered_products: arr, search: action.payload };
-  // }
-
-  // if (action.type === FILTER_PRODUCTS) {
-  //   const value = action.payload;
-  //   if (value === 'all') {
-  //     return {
-  //       ...state,
-  //       filter: value,
-  //       filtered_products: [...state.all_products],
-  //       all_filtered_products: [...state.all_products],
-  //     };
-  //   }
-  //   const tempProducts = state.all_products.filter(
-  //     (product) => product.category === value
-  //   );
-  //   return {
-  //     ...state,
-  //     filter: value,
-  //     filtered_products: tempProducts,
-  //     all_filtered_products: tempProducts,
-  //   };
-  // }
-
-  //   if (sortType === 'name_z-a') {
-  //     const strDescending = [...state.filtered_products].sort((a, b) =>
-  //       a.name > b.name ? -1 : 1
-  //     );
-  //     return { ...state, filtered_products: strDescending };
-  //   } else if (sortType === 'price_lowest') {
-  //     const numAscending = [...state.filtered_products].sort(
-  //       (a, b) => a.price - b.price
-  //     );
-  //     return { ...state, filtered_products: numAscending };
-  //   } else if (sortType === 'price_highest') {
-  //     const numDescending = [...state.filtered_products].sort(
-  //       (a, b) => b.price - a.price
-  //     );
-  //     return { ...state, filtered_products: numDescending };
-  //   }
-  //   return { ...state, sort_type: action.payload };
-  // }
 
   throw new Error(`No Matching "${action.type}" - action type`);
 };

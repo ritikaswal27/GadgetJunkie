@@ -17,16 +17,14 @@ const initialState = {
   all_products: [],
   grid_view: true,
   sort: 'price-lowest',
-  // filter: 'all',
-  // search: '',
-  // searched_products: [],
-  // company: 'all',
-  filterParam: {
-    category: 'all',
+  filters: {
+    text: '',
     company: 'all',
-    search: '',
+    category: 'all',
     color: 'all',
-    price: '309999',
+    min_price: 0,
+    max_price: 0,
+    price: 0,
     shipping: false,
   },
 };
@@ -42,33 +40,13 @@ export const FilterProvider = ({ children }) => {
     dispatch({ type: LOAD_PRODUCTS, payload: products });
   }, [products]);
 
-  const updateFilter = (e) => {
-    const name = e.target.name;
-    let value;
-    if (name === 'category') {
-      value = e.target.textContent;
-    } else if (name === 'shipping') {
-      value = e.target.checked;
-    } else {
-      value = e.target.value;
-    }
-    dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
-  };
-  // const filterProducts = (e) => {
-  //   const value = e.target.textContent;
-  //   dispatch({ type: FILTER_PRODUCTS, payload: value });
-  // };
-
-  // useEffect(() => {
-  //   dispatch({ type: FILTER_PRODUCTS });
-  // }, [products, state.filter]);
   useEffect(() => {
     dispatch({ type: FILTER_PRODUCTS });
-  }, [products, state.filterParam]);
+  }, [products, state.filters]);
 
   useEffect(() => {
     dispatch({ type: SORT_PRODUCTS });
-  }, [products, state.sort, state.filterParam]);
+  }, [products, state.sort, state.filters]);
 
   const setGridView = () => {
     dispatch({ type: SET_GRIDVIEW });
@@ -79,15 +57,28 @@ export const FilterProvider = ({ children }) => {
   };
 
   const updateSort = (e) => {
-    // const name = e.target.name;
     const value = e.target.value;
     dispatch({ type: UPDATE_SORT, payload: value });
   };
 
-  // const updateCompany = (e) => {
-  //   const value = e.target.value;
-  //   dispatch;
-  // };
+  const updateFilters = (e) => {
+    const name = e.target.name;
+    let value = e.target.value;
+    if (name === 'category') {
+      value = e.target.textContent;
+    }
+    if (name === 'color') {
+      value = e.target.dataset.color;
+    }
+    if (name === 'price') {
+      value = Number(value);
+    }
+    if (name === 'shipping') {
+      value = e.target.checked;
+    }
+    dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
+  };
+
   const clearFilters = () => {
     dispatch({ type: CLEAR_FILTERS });
   };
@@ -99,8 +90,7 @@ export const FilterProvider = ({ children }) => {
         setGridView,
         setListView,
         updateSort,
-        // filterProducts,
-        updateFilter,
+        updateFilters,
         clearFilters,
       }}
     >
