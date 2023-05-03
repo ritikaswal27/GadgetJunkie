@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Filters, ProductList, Sort, PageHero } from '../components';
-import { useProductsContext } from '../context/products_context';
+// import { useProductsContext } from '../context/products_context';
 
 const ProductsPage = () => {
   // const data = useProductsContext();
