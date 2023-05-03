@@ -27,7 +27,7 @@ const CartButtons = () => {
           onClick={() => {
             clearCart();
             localStorage.removeItem('user');
-            logout({ returnTo: window.location.origin });
+            logout({ logoutParams: { returnTo: window.location.origin } });
           }}
         >
           Logout <FaUserMinus />

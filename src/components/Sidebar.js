@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from '../assets/logo.svg';
+// import logo from '../assets/logo.svg';
+import Logo from './Logo';
 import { Link } from 'react-router-dom';
 import { useProductsContext } from '../context/products_context';
 import { FaTimes } from 'react-icons/fa';
@@ -18,7 +19,8 @@ const Sidebar = () => {
       >
         <div className='sidebar-header'>
           <Link to='/'>
-            <img src={logo} alt='comfy sloth' />
+            {/* <img src={logo} alt='comfy sloth' /> */}
+            <Logo />
           </Link>
           <button className='close-btn' type='button' onClick={closeSidebar}>
             <FaTimes />
