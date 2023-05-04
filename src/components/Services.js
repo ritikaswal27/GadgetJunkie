@@ -8,13 +8,14 @@ const Services = () => {
       <div className='section-center'>
         <article className='header'>
           <h3>
-            custom furniture <br /> built only for you
+            custom gadgets <br /> built only for you
           </h3>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium
-            cumque dicta, quae magni repellendus, itaque dolore, nostrum sequi
-            unde dolor vel recusandae similique nulla maxime eveniet tempora?
-            Explicabo, dolor mollitia.
+            At Gadget Junkie, we believe that technology should be tailored to
+            fit your needs and preferences. That's why we offer custom gadgets
+            built only for you. Whether you're looking for a personalized smart
+            home system, a custom gaming PC, or a unique wearable device, we've
+            got you covered.
           </p>
         </article>
 

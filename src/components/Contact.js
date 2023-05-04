@@ -8,10 +8,12 @@ const Contact = () => {
         <h3>Join our newsletter and get 20% off</h3>
         <div className='content'>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, a
-            consequuntur ducimus sunt beatae harum alias? Beatae dolorum nam eum
-            eaque necessitatibus molestias tempore voluptate odit itaque
-            obcaecati. Nihil, saepe?
+            Joining our newsletter is the perfect way to stay up-to-date on the
+            latest tech trends, product releases, and exclusive deals from
+            Gadget Junkie. By subscribing, you'll get access to insider
+            information and expert opinions from our team of tech enthusiasts,
+            as well as first dibs on new product launches and special
+            promotions.
           </p>
           <form
             className='contact-form'

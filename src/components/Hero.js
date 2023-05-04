@@ -14,9 +14,8 @@ const Hero = () => {
           our gadgets
         </h1>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
-          tempore dignissimos laborum fugit, impedit sint facere possimus
-          accusamus vitae! Velit!
+          Your ultimate destination for the latest and greatest tech gadgets
+          that will elevate your lifestyle to the next level!
         </p>
         <Link to='/products' className='btn hero-btn'>
           shop now

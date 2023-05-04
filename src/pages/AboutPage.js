@@ -15,12 +15,18 @@ const AboutPage = () => {
             <div className='underline'></div>
           </div>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo
-            maiores voluptatum voluptates beatae qui aspernatur impedit a, minus
-            suscipit hic repellat animi nihil minima quos aperiam magnam
-            molestias, totam excepturi, ratione laudantium vel possimus at
-            sapiente quibusdam! Voluptatibus mollitia quisquam culpa odit sunt
-            ex, aliquam tempore consequuntur rerum optio unde.
+            Gadget Junkie was founded in 2010 with a simple yet ambitious goal:
+            to provide people with the latest and greatest technology gadgets
+            that could transform their lives. Our journey began with a small
+            team of tech enthusiasts who were passionate about exploring the
+            potential of the latest innovations and sharing their knowledge with
+            others. Over the years, we have grown into a leading provider of
+            cutting-edge technology products and solutions, with a loyal
+            customer base spanning the globe. We have always been committed to
+            providing our customers with exceptional service, expert advice, and
+            the highest-quality products available. Today, we continue to push
+            the boundaries of what is possible with technology, exploring new
+            ways to enhance people's lives and create a brighter future for all.
           </p>
         </article>
       </Wrapper>
