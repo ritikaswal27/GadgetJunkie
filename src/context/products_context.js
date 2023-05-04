@@ -48,9 +48,9 @@ export const ProductsProvider = ({ children }) => {
     try {
       const response = await axios.get(url);
       const products = response.data;
-      if (response.statusText === 'OK') {
-        dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
-      }
+      // if (response.statusText === 'OK') {
+      dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products });
+      // }
     } catch {
       dispatch({ type: GET_PRODUCTS_ERROR });
     }
